@@ -12,6 +12,8 @@ function App() {
       <button>
         Load Users
       </button>
+
+      <p>No users loaded</p>
     </main>
   )
 }
