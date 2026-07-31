@@ -4,6 +4,8 @@ import express from 'express'
 const app = express()
 const PORT = 3000
 
+app.disable('etag')
+
 app.use(
   cors({
     origin: 'http://localhost:5173',
