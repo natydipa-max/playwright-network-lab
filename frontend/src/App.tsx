@@ -9,6 +9,7 @@ function App() {
   const [users, setUsers] = useState<User[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [hasLoaded, setHasLoaded] = useState(false)
 
   async function handleLoadUsers() {
     setLoading(true)
@@ -18,11 +19,25 @@ function App() {
       const data = await getUsers()
       setUsers(data)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unknown error')
+      if (err instanceof TypeError) {
+        setError('Network error: request could not be completed')
+      } else {
+        setError(err instanceof Error ? err.message : 'Unknown error')
+      }
     } finally {
+      setHasLoaded(true)
       setLoading(false)
     }
   }
+
+  const showInitialState =
+    !loading && !error && !hasLoaded
+
+  const showEmptyState =
+    !loading && !error && hasLoaded && users.length === 0
+
+  const showUsers =
+    users.length > 0
 
   return (
     <main data-testid="app">
@@ -40,27 +55,35 @@ function App() {
         {loading ? 'Loading...' : 'Load Users'}
       </button>
 
+      {loading && (
+        <p data-testid="loading">Loading users...</p>
+      )}
+
       {error && (
-        <p data-testid="error">{error}</p>
-      )}
+      <p data-testid="error">{error}</p>
+    )}
 
-      {!error && users.length === 0 && !loading && (
-        <p data-testid="empty-state">No users loaded</p>
-      )}
+    {showInitialState && (
+      <p data-testid="empty-state">No users loaded</p>
+    )}
 
-      {users.length > 0 && (
-        <ul data-testid="user-list">
-          {users.map(user => (
-            <li
-              key={user.id}
-              data-testid={`user-${user.id}`}
-            >
-              {user.name} {user.role}
-            </li>
-          ))}
-        </ul>
-      )}
-    </main>
+    {showEmptyState && (
+      <p data-testid="empty-state">No users found</p>
+    )}
+
+    {showUsers && (
+      <ul data-testid="user-list">
+        {users.map(user => (
+          <li
+            key={user.id}
+            data-testid={`user-${user.id}`}
+          >
+            {user.name} {user.role}
+          </li>
+        ))}
+      </ul>
+    )}
+  </main>
   )
 }
 

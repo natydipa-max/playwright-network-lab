@@ -1,22 +1,21 @@
 import { expect, test } from '@playwright/test'
 
+// Baseline test using the real backend without request interception.
 test.describe('Users - Real API', () => {
-  test('loads users from the backend', async ({ page }) => {
+  test('loads and displays users from the real API', async ({ page }) => {
     await page.goto('/')
 
     await expect(page.getByTestId('empty-state')).toHaveText(
       'No users loaded',
     )
 
-    await page.getByTestId('load-users').click()
-
-    const responsePromise = page.waitForResponse(
-        'http://localhost:3000/users',
-        )
-
-    await page.getByTestId('load-users').click()
-
-    const response = await responsePromise
+    const [response] = await Promise.all([
+      page.waitForResponse(response =>
+        response.url().endsWith('/users') &&
+        response.request().method() === 'GET',
+      ),
+      page.getByTestId('load-users').click(),
+    ])
 
     expect(response.status()).toBe(200)
 
