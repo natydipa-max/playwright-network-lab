@@ -21,7 +21,11 @@ jobs:
             node-version: 24
             cache: npm
             cache-dependency-path: tests/package-lock.json
-            
+
+      - name: Configure frontend environment
+        working-directory: frontend
+        run: echo "VITE_API_URL=http://localhost:3000" > .env
+
       - name: Install frontend dependencies
         working-directory: frontend
         run: npm ci
