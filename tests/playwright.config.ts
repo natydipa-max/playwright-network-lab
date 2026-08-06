@@ -13,12 +13,16 @@ export default defineConfig({
       cwd: '../backend',
       url: 'http://localhost:3000',
       reuseExistingServer: true,
+      stdout: 'pipe',
+      stderr: 'pipe',
     },
     {
       command: 'npm run dev',
       cwd: '../frontend',
       url: 'http://localhost:5173',
       reuseExistingServer: true,
+      stdout: 'pipe',
+      stderr: 'pipe',
     },
   ],
 })
