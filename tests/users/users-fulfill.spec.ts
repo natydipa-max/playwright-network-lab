@@ -38,9 +38,9 @@ test.describe('Users - route.fulfill()', () => {
     await page.getByTestId('load-users').click()
 
     // Educational assertion: verifies that the request was intercepted.
-    // In production tests, asserting the rendered UI is usually sufficient.
     expect(intercepted).toBe(true)
 
+    // Verify the UI displays the mocked users after the request completes successfully.
     await expect(page.getByTestId('user-list')).toBeVisible()
 
     await expect(page.getByTestId('user-99')).toHaveText('Playwright QA')

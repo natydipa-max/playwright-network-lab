@@ -26,9 +26,9 @@ test.describe('Users - route.fulfill() - Empty response', () => {
     await page.getByTestId('load-users').click()
 
     // Educational assertion: verifies that the request was intercepted.
-    // In production tests, asserting the rendered UI is usually sufficient.
     expect(intercepted).toBe(true)
 
+    // Verify the UI displays an empty state when the API returns no users.
     await expect(page.locator('[data-testid^="user-"]')).toHaveCount(0)
     await expect(page.getByTestId('user-list')).not.toBeVisible()
     await expect(page.getByTestId('empty-state')).toHaveText(

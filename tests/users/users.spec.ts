@@ -19,6 +19,7 @@ test.describe('Users - Real API', () => {
 
     expect(response.status()).toBe(200)
 
+    // Verify the UI displays the loaded users after the request completes successfully.
     await expect(page.getByTestId('user-list')).toBeVisible()
 
     await expect(page.getByTestId('user-1')).toHaveText('John USER')

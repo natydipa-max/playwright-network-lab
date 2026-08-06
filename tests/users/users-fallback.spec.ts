@@ -45,7 +45,6 @@ test.describe('Users - route.continue()', () => {
     await routeHandled
 
     // Educational assertion: verifies that the request was intercepted.
-    // In production tests, asserting the rendered UI is usually sufficient.
     expect(intercepted).toBe(true)
 
     const response = await responsePromise
@@ -58,6 +57,7 @@ test.describe('Users - route.continue()', () => {
     // The response comes from the real backend.
     expect(response.status()).toBe(200)
 
+    // Verify the UI displays the loaded users after the request completes successfully.
     await expect(page.getByTestId('user-list')).toBeVisible()
 
     await expect(page.getByTestId('user-1')).toHaveText('John USER')

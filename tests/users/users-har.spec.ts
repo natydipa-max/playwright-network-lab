@@ -14,6 +14,7 @@ test.describe('Users - routeFromHAR()', () => {
 
     await page.getByTestId('load-users').click()
 
+    // Verify the UI displays the loaded users after the request completes successfully.
     await expect(page.getByTestId('user-list')).toBeVisible()
 
     await expect(page.getByTestId('user-1')).toHaveText('John USER')

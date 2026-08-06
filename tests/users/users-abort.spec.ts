@@ -24,6 +24,7 @@ test.describe('Users - route.abort()', () => {
     // Educational assertion: verifies that the request was intercepted.
     expect(intercepted).toBe(true)
 
+    // Verify the UI displays an error message indicating a network failure.
     await expect(page.getByTestId('error')).toBeVisible()
 
     await expect(page.getByTestId('error')).toContainText(

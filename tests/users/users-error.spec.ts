@@ -29,11 +29,11 @@ test.describe('Users - route.fulfill() - 500 error', () => {
     await page.getByTestId('load-users').click()
 
     // Educational assertion: verifies that the request was intercepted.
-    // In production tests, asserting the rendered UI is usually sufficient.
     expect(intercepted).toBe(true)
 
     await expect(page.getByTestId('user-list')).not.toBeVisible()
 
+    // Verify the UI displays an error message indicating a 500 error from the API.
     await expect(page.getByTestId('error')).toHaveText(
       'API error: 500',
     )

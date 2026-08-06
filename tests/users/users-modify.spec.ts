@@ -34,8 +34,10 @@ test.describe('Users - route.fetch() + route.fulfill()', () => {
     await page.getByTestId('load-users').click()
     await routeHandled // <- Wait for the handler to finish BEFORE asserting
 
+    // Educational assertion: verifies that the request was intercepted.
     expect(intercepted).toBe(true)
 
+    // Verify the UI displays the modified users after the request completes successfully.
     await expect(page.getByTestId('user-list')).toBeVisible()
     await expect(page.getByTestId('user-1')).toHaveText('Playwright QA')
     await expect(page.getByTestId('user-2')).toHaveText('Mary ADMIN')

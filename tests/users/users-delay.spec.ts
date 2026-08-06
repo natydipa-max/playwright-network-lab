@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test'
 
 // Demonstrates how to simulate network latency using route.continue().
-test.describe('Users - route.continue() - Delayed response', () => {
+test.describe('Users - route.continue()', () => {
   test('displays a loading state while waiting for a delayed response', async ({
     page,
   }) => {
@@ -38,6 +38,7 @@ test.describe('Users - route.continue() - Delayed response', () => {
     const response = await responsePromise
     expect(response.status()).toBe(200)
 
+    // After the request completes, the UI should display the loaded users.
     await expect(page.getByTestId('user-list')).toBeVisible()
 
     await expect(page.getByTestId('user-1')).toHaveText('John USER')
