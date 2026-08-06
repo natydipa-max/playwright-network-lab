@@ -19,6 +19,10 @@ app.get('/users', (_req, res) => {
   ])
 })
 
+app.get('/health', (_, res) => {
+  res.sendStatus(200);
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`)
 })

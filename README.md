@@ -233,3 +233,90 @@ The following example shows how multiple route handlers can participate in proce
                  ▼
              Browser
 ```
+## Troubleshooting: `webServer` timeout with multiple services
+
+### Problem
+
+Playwright timed out waiting for the configured `webServer`:
+
+```text
+Error: Timed out waiting 60000ms from config.webServer.
+```
+
+The project was configured to start both the backend and frontend:
+
+```ts
+webServer: [
+  {
+    name: 'Backend',
+    command: 'npm run dev',
+    cwd: '../backend',
+    url: 'http://localhost:3000',
+  },
+  {
+    name: 'Frontend',
+    command: 'npm run dev',
+    cwd: '../frontend',
+    url: 'http://localhost:5173',
+  },
+]
+```
+
+Only the backend started. The frontend was never launched.
+
+### Root cause
+
+Although the backend process started successfully, the configured health check URL returned **404 Not Found**:
+
+```text
+GET http://localhost:3000 → 404 Not Found
+```
+
+The actual API endpoint was:
+
+```text
+GET http://localhost:3000/users → 200 OK
+```
+
+Because Playwright did not consider the backend ready, it never started the second `webServer`, eventually timing out.
+
+### Solution
+
+Configure `webServer.url` to point to an endpoint that returns a successful response.
+
+```ts
+webServer: [
+  {
+    name: 'Backend',
+    command: 'npm run dev',
+    cwd: '../backend',
+    url: 'http://localhost:3000/users',
+  },
+  {
+    name: 'Frontend',
+    command: 'npm run dev',
+    cwd: '../frontend',
+    url: 'http://localhost:5173',
+  },
+]
+```
+
+An even better approach is to expose a dedicated health endpoint:
+
+```ts
+app.get('/health', (_, res) => {
+  res.sendStatus(200);
+});
+```
+
+Then configure:
+
+```ts
+url: 'http://localhost:3000/health'
+```
+
+### Lessons learned
+
+- A running process does not necessarily mean Playwright considers the server **ready**.
+- Always configure `webServer.url` to a valid endpoint that returns a successful HTTP response.
+- A dedicated `/health` endpoint is preferable to using an application endpoint, since it clearly represents server readiness and is less likely to change as the application evolves.

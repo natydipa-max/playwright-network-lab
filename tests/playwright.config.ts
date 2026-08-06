@@ -8,21 +8,19 @@ export default defineConfig({
   },
 
   webServer: [
-    {
-      command: 'npm run dev',
-      cwd: '../backend',
-      url: 'http://localhost:3000',
-      reuseExistingServer: true,
-      stdout: 'pipe',
-      stderr: 'pipe',
-    },
-    {
-      command: 'npm run dev',
-      cwd: '../frontend',
-      url: 'http://localhost:5173',
-      reuseExistingServer: true,
-      stdout: 'pipe',
-      stderr: 'pipe',
-    },
-  ],
+  {
+    name: 'Backend',
+    command: 'npm run dev',
+    cwd: '../backend',
+    url: 'http://localhost:3000/health',
+    reuseExistingServer: true,
+  },
+  {
+    name: 'Frontend',
+    command: 'npm run dev',
+    cwd: '../frontend',
+    url: 'http://localhost:5173',
+    reuseExistingServer: true,
+  },
+],
 })
