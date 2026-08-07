@@ -20,6 +20,12 @@ Depending on the scenario, Playwright intercepts, modifies, mocks, aborts, delay
 
 ---
 
+## Latest Release
+
+See [v1.0.0](https://github.com/natydipa-max/playwright-network-lab/releases/tag/v1.0.0)
+
+---
+
 ## Interception Techniques Covered
 
 This project demonstrates:
